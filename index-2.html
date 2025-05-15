@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>2ファイルをZIPで保存</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+</head>
+<body>
+  <h1>2つのファイルをZIPで保存</h1>
+  <button onclick="saveZip()">ZIPとして保存</button>
+
+  <script>
+    async function saveZip() {
+      const zip = new JSZip();
+
+      // ファイルを追加
+      zip.file("file1.txt", "これはファイル1の内容です。");
+      zip.file("file2.txt", "これはファイル2の内容です。");
+
+      // ZIPファイルを生成
+      const blob = await zip.generateAsync({ type: "blob" });
+      const url = URL.createObjectURL(blob);
+
+      // ダウンロードリンク作成
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "files.zip";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+  </script>
+</body>
+</html>
